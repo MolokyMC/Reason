@@ -11,10 +11,12 @@ import net.ccbluex.liquidbounce.utils.ClientUtils;
 import net.ccbluex.liquidbounce.utils.misc.HttpUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.util.ResourceLocation;
 
 import java.awt.*;
 import java.io.*;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -71,21 +73,21 @@ public class Fonts {
 
         ClientUtils.getLogger().info("Loading Fonts.");
 
-        downloadFonts();
+        //downloadFonts();
 
-        font35 = new GameFontRenderer(getFont("Roboto-Medium.ttf", 35));
-        font40 = new GameFontRenderer(getFont("Roboto-Medium.ttf", 40));
-        font72 = new GameFontRenderer(getFont("Roboto-Medium.ttf", 72));
-        fontSmall = new GameFontRenderer(getFont("Roboto-Medium.ttf", 30));
-        fontTiny = new GameFontRenderer(getFont("Roboto-Medium.ttf", 24));
-        fontLarge = new GameFontRenderer(getFont("Roboto-Medium.ttf", 60));
-        fontSFUI35 = new GameFontRenderer(getFont("sfui.ttf", 35));
-        fontSFUI40 = new GameFontRenderer(getFont("sfui.ttf", 40));
-        fontBold180 = new GameFontRenderer(getFont("Roboto-Bold.ttf", 180));
-        fontTahoma = new GameFontRenderer(getFont("TahomaBold.ttf", 35));
-        fontTahoma30 = new GameFontRenderer(getFont("TahomaBold.ttf", 30));
-        fontTahomaSmall = new TTFFontRenderer(getFont("Tahoma.ttf", 11));
-        fontBangers = new GameFontRenderer(getFont("Bangers-Regular.ttf", 45));
+        font35 = new GameFontRenderer(getFont2("Roboto-Medium.ttf", 35));
+        font40 = new GameFontRenderer(getFont2("Roboto-Medium.ttf", 40));
+        font72 = new GameFontRenderer(getFont2("Roboto-Medium.ttf", 72));
+        fontSmall = new GameFontRenderer(getFont2("Roboto-Medium.ttf", 30));
+        fontTiny = new GameFontRenderer(getFont2("Roboto-Medium.ttf", 24));
+        fontLarge = new GameFontRenderer(getFont2("Roboto-Medium.ttf", 60));
+        fontSFUI35 = new GameFontRenderer(getFont2("sfui.ttf", 35));
+        fontSFUI40 = new GameFontRenderer(getFont2("sfui.ttf", 40));
+        fontBold180 = new GameFontRenderer(getFont2("Roboto-Bold.ttf", 180));
+        fontTahoma = new GameFontRenderer(getFont2("TahomaBold.ttf", 35));
+        fontTahoma30 = new GameFontRenderer(getFont2("TahomaBold.ttf", 30));
+        fontTahomaSmall = new TTFFontRenderer(getFont2("Tahoma.ttf", 11));
+        fontBangers = new GameFontRenderer(getFont2("Bangers-Regular.ttf", 45));
 
         try {
             CUSTOM_FONT_RENDERERS.clear();
@@ -217,9 +219,23 @@ public class Fonts {
         return fonts;
     }
 
+    private static Font getFont2(String fontName, int size) {
+        Font font;
+        try {
+            InputStream is = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation("liquidbounce+/font/"+fontName)).getInputStream();
+            font = Font.createFont(0, is);
+            font = font.deriveFont(0, size);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("Error loading font");
+            font = new Font("default", 0, size);
+        }
+        return font;
+    }
+
     private static Font getFont(final String fontName, final int size) {
         try {
-            final InputStream inputStream = new FileInputStream(new File(LiquidBounce.fileManager.fontsDir, fontName));
+            final InputStream inputStream = Files.newInputStream(new File(LiquidBounce.fileManager.fontsDir, fontName).toPath());
             Font awtClientFont = Font.createFont(Font.TRUETYPE_FONT, inputStream);
             awtClientFont = awtClientFont.deriveFont(Font.PLAIN, size);
             inputStream.close();

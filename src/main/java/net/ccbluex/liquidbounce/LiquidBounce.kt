@@ -17,6 +17,7 @@ import net.ccbluex.liquidbounce.file.FileManager
 import net.ccbluex.liquidbounce.script.ScriptManager
 import net.ccbluex.liquidbounce.script.remapper.Remapper.loadSrg
 import net.ccbluex.liquidbounce.tabs.*
+import net.ccbluex.liquidbounce.ui.CFont.FontLoaders
 import net.ccbluex.liquidbounce.ui.client.altmanager.GuiAltManager
 import net.ccbluex.liquidbounce.ui.client.clickgui.ClickGui
 import net.ccbluex.liquidbounce.ui.client.hud.HUD
@@ -52,6 +53,9 @@ object LiquidBounce {
     lateinit var eventManager: EventManager
     lateinit var fileManager: FileManager
     lateinit var scriptManager: ScriptManager
+
+    lateinit var fontLoaders: FontLoaders
+    lateinit var fontLoaders2: net.ccbluex.liquidbounce.ui.CFont.font.FontLoaders
 
     lateinit var tipSoundManager: TipSoundManager
 
@@ -103,6 +107,8 @@ object LiquidBounce {
 
         // Load client fonts
         Fonts.loadFonts()
+        fontLoaders = FontLoaders()
+        fontLoaders2 = net.ccbluex.liquidbounce.ui.CFont.font.FontLoaders()
 
         // Init SoundManager
         tipSoundManager = TipSoundManager()
